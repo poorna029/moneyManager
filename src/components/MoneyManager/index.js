@@ -84,7 +84,7 @@ class MoneyManager extends Component {
             expenses: parseInt(p.expenses) + parseInt(amount),
             id: Id(),
             Type: 'Expenses',
-            title: parseInt(title),
+            title,
             amount: parseInt(amount),
           },
         ],
