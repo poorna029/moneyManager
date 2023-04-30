@@ -4,14 +4,15 @@ import './index.css'
 
 const MoneyDetails = e => {
   const {changes} = e
+  console.log('changes', changes)
   //   const {optionId} = d
 
   const {
     balance = parseInt(0),
     expenses = parseInt(0),
     income = parseInt(0),
-  } = changes[changes.length - 1]
-  //   console.log(balance, expenses, income)
+  } = changes
+  //   console.log(typeof balance, typeof expenses, typeof income)
 
   //   console.log(changes)
 

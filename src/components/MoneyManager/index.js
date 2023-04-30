@@ -41,19 +41,24 @@ class MoneyManager extends Component {
     e.preventDefault()
     const {title, income, expenses, amount} = this.state
     let {Type} = this.state
-    console.log(title, income, expenses, amount)
+    // console.log(title, income, expenses, amount)
 
     if (Type === '') {
       Type = 'Income'
     }
-    console.log(Type)
+    console.log('type', Type)
 
     if (Type === 'Income' && amount !== '') {
-      const {balance} = this.state
-      console.log(balance)
+      // collect the details of title,amount,type
+      // available bal=income+amount
+      // income+=amount if type=== "income"
+      // expenses+=amount if type==="expenses"
+      //   const {balance} = this.state
+      //   console.log(balance)
       this.setState(p => ({
         income: parseInt(p.income) + parseInt(amount),
         balance: parseInt(p.balance) + parseInt(amount),
+        expenses: parseInt(p.expenses),
         Tlist: [
           ...p.Tlist,
           {
@@ -71,10 +76,14 @@ class MoneyManager extends Component {
         title: '',
       }))
     } else if (Type === 'EXPENSES' && amount !== '') {
-      console.log('Expenses')
+      //   console.log('Expenses')
+      // collect the details of title,amount,type
+      // available bal=avail bal-amount
+      // expenses+=amount if type==="expenses"
       this.setState(p => ({
         expenses: parseInt(p.expenses) + parseInt(amount),
         balance: parseInt(p.balance) - parseInt(amount),
+        income: parseInt(income),
 
         Tlist: [
           ...p.Tlist,
@@ -107,28 +116,57 @@ class MoneyManager extends Component {
     this.setState({Type: e.target.value})
   }
 
-  onDelete = u => {
+  onDelete = (u, type) => {
     // console.log(u)
     const {Tlist} = this.state
     const s = Tlist.filter(x => x.id === u)
-    const {balance, income, expenses, amount} = s
+    console.log(s)
+    const {balance, income, expenses, amount} = s[0]
+    console.log('delete', s, balance, income, expenses, amount)
 
-    this.setState({
-      balance: parseInt(balance) + parseInt(amount),
-      income: parseInt(income) + parseInt(amount),
-      expenses: parseInt(expenses) + parseInt(amount),
-    })
+    // if type===income
 
-    this.setState(pl => ({
-      Tlist: pl.Tlist.filter(x => x.id !== u),
-    }))
+    if (type === 'Income') {
+      this.setState({
+        balance: parseInt(balance) - parseInt(amount),
+        income: parseInt(income) - parseInt(amount),
+        expenses: parseInt(expenses),
+      })
+
+      this.setState(pl => ({
+        Tlist: pl.Tlist.filter(x => x.id !== u),
+      }))
+    }
+
+    // if type===expenses
+
+    if (type === 'Expenses') {
+      this.setState({
+        balance: parseInt(balance) + parseInt(amount),
+        income: parseInt(income),
+        expenses: parseInt(expenses) - parseInt(amount),
+      })
+
+      this.setState(pl => ({
+        Tlist: pl.Tlist.filter(x => x.id !== u),
+      }))
+    }
   }
 
   render() {
-    const {balance, expenses, income, Tlist, title, amount} = this.state
+    const {balance, expenses, income, Tlist, title, amount, Type} = this.state
+    const expensesObj = {balance, expenses, income}
+    console.log('Tlist', Tlist)
     // const {Tlist} = this.state
     // const [income, expenses, balance, Type, title, amount] = Tlist[0]
-    console.log(income, expenses, balance)
+    // console.log(
+    //   income,
+    //   expenses,
+    //   balance,
+    //   typeof income,
+    //   typeof expenses,
+    //   typeof balance,
+    // )
 
     return (
       <div className="main">
@@ -138,16 +176,14 @@ class MoneyManager extends Component {
         </div>
         <div className="r13-main-Money-Details-cards-container">
           {Tlist.length > 0 ? (
-            <MoneyDetails changes={Tlist} />
+            <MoneyDetails changes={expensesObj} />
           ) : (
             <MoneyDetails
-              changes={[
-                {
-                  balance: parseInt(0),
-                  income: parseInt(0),
-                  expenses: parseInt(0),
-                },
-              ]}
+              changes={{
+                balance: parseInt(0),
+                income: parseInt(0),
+                expenses: parseInt(0),
+              }}
             />
           )}
         </div>
@@ -164,7 +200,7 @@ class MoneyManager extends Component {
                 placeholder="TITLE"
                 className="input"
                 onChange={this.onChangeOfTitle}
-                value={title}
+                value={`${title}`}
                 required
               />
               <br />
@@ -176,7 +212,7 @@ class MoneyManager extends Component {
                 placeholder="AMOUNT"
                 className="input"
                 onChange={this.onChangeOfAmount}
-                value={parseInt(amount)}
+                value={`${parseInt(amount)}`}
               />
               <br />
               <label htmlFor="type">TYPE</label>
@@ -184,7 +220,7 @@ class MoneyManager extends Component {
               <select
                 className="select"
                 onChange={this.onChangeOfType}
-                // value={Type}
+                value={`${Type}`}
               >
                 {transactionTypeOptions.map(item => (
                   <option key={item.optionId} value={item.optionId}>
@@ -200,13 +236,15 @@ class MoneyManager extends Component {
           </div>
           <div className="History">
             <h1>History</h1>
-            <div className="History-headings">
-              <p className="history-type1">Title</p>
-              <hr className="hr1" />
-              <p className="history-type2">Amount</p>
-              <hr className="hr1" />
-              <p className="history-type3">Type</p>
-            </div>
+            <ul className="History-headings">
+              <li>
+                <p className="history-type1">Title</p>
+                <hr className="hr1" />
+                <p className="history-type2">Amount</p>
+                <hr className="hr1" />
+                <p className="history-type3">Type</p>
+              </li>
+            </ul>
             <ul>
               {Tlist.length > 0
                 ? Tlist.map(i => (

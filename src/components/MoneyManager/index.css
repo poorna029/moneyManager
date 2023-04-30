@@ -136,13 +136,14 @@ option {
   display: flex;
   flex-direction: row;
   padding: 0px auto;
-  width: 100%;
+  width: 120%;
   justify-content: center;
   overflow: auto;
   border: 3px solid #effeef;
   padding: 0px 10px;
   overflow: auto;
   border-top: 0px;
+  margin-left: -40px;
 }
 .money-details-image {
   width: 60px;

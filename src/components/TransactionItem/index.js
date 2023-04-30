@@ -3,11 +3,11 @@ import './index.css'
 const TransactionItem = e => {
   const {val, fun} = e
   const {Type, amount, title, id} = val
-  console.log(Type, amount, title, id)
+  //   console.log(Type, amount, title, id)
 
   const onDeleteClick = () => {
     // console.log('deleted')
-    fun(id)
+    fun(id, Type)
   }
 
   return (
