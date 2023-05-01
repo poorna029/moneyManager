@@ -2,60 +2,51 @@
 
 import './index.css'
 
-const MoneyDetails = e => {
-  const {changes} = e
-  console.log('changes', changes)
-  //   const {optionId} = d
+const MoneyDetails = props => {
+  const {balanceAmount, incomeAmount, expensesAmount} = props
 
-  const {
-    balance = parseInt(0),
-    expenses = parseInt(0),
-    income = parseInt(0),
-  } = changes
-  //   console.log(typeof balance, typeof expenses, typeof income)
-
-  //   console.log(changes)
-
-  //   const a = y.slice(0, 1).toLowerCase() + y.slice(1)
-  //   console.log(a)
   return (
-    <>
-      <div className="Money-Details-card-container balance">
+    <div className="money-details-container">
+      <div className="balance-container">
         <img
           src="https://assets.ccbp.in/frontend/react-js/money-manager/balance-image.png"
           alt="balance"
-          className="money-details-image"
+          className="details-img"
         />
         <div>
-          <p>Your Balance</p>
-          <p data-testid="balanceAmount">Rs {balance}</p>
+          <p className="details-text">Your Balance</p>
+          <p className="details-money" data-testid="balanceAmount">
+            Rs {balanceAmount}
+          </p>
         </div>
       </div>
-
-      <div className="Money-Details-card-container income">
+      <div className="income-container">
         <img
           src="https://assets.ccbp.in/frontend/react-js/money-manager/income-image.png"
           alt="income"
-          className="money-details-image"
+          className="details-img"
         />
         <div>
-          <p>Your Income</p>
-          <p data-testid="incomeAmount">RS {income}</p>
+          <p className="details-text">Your Income</p>
+          <p className="details-money" data-testid="incomeAmount">
+            Rs {incomeAmount}
+          </p>
         </div>
       </div>
-
-      <div className="Money-Details-card-container expenses">
+      <div className="expenses-container">
         <img
           src="https://assets.ccbp.in/frontend/react-js/money-manager/expenses-image.png"
           alt="expenses"
-          className="money-details-image"
+          className="details-img"
         />
         <div>
-          <p>Your Expenses</p>
-          <p data-testid="expensesAmount">RS {expenses}</p>
+          <p className="details-text">Your Expenses</p>
+          <p className="details-money" data-testid="expensesAmount">
+            Rs {expensesAmount}
+          </p>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
